@@ -23,7 +23,6 @@
 ---
 
 ## 📸 Интерфейс
-*(Добавьте скриншоты в папку `assets` и замените пути ниже)*
 <p align="center">
   <img src="assets/miniapp_screen.png" width="300" alt="Mini App">
   <img src="assets/bot_alerts.png" width="300" alt="Alerts">
