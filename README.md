@@ -41,33 +41,41 @@
 * Токен бота от [@BotFather](https://t.me/BotFather).
 
 ### Шаги установки
-1. **Клонируйте репозиторий:**
-   ```bash
-   git clone https://github.com/mqrgn/wb-tracker.git
-   cd wb-tracker
-Настройте переменные:
-Создайте файл .env на основе примера:
-code
-Bash
-cp .env.example .env
-Заполните его своими данными (токен бота, пароль БД, URL от Ngrok).
-Запустите Ngrok:
-Откройте отдельный терминал и выполните (замените ВАШ_ДОМЕН на ваш статический адрес):
-code
-Bash
-ngrok http --domain=ВАШ_ДОМЕН 8000
-Запуск Docker:
-В папке с проектом выполните:
-code
-Bash
-docker-compose up --build
-Настройка в Telegram:
-В настройках бота через @BotFather привяжите ваш домен Ngrok к кнопке Menu Button.
-🛠 Технологический стек
-Backend: FastAPI, Python 3.12
-Database: PostgreSQL + SQLAlchemy 2.0 (Async)
-Telegram: Aiogram 3.x
-Scraping: Selenium (Chrome Headless)
-DevOps: Docker, Docker Compose, Alembic
 
-Проект разработан для автоматизации покупок и анализа цен.
+**1. Клонируйте репозиторий:**
+```bash
+git clone https://github.com/mqrgn/wb-tracker.git
+cd wb-tracker
+```
+
+**2. Настройте переменные:**
+Создайте файл .env на основе примера:
+```bash
+cp .env.example .env
+```
+Заполните его своими данными (токен бота, пароль БД, URL от Ngrok).
+
+
+**3. Запустите Ngrok:**
+Откройте отдельный терминал и выполните (замените ВАШ_ДОМЕН на ваш статический адрес):
+```bash
+ngrok http --domain=ВАШ_ДОМЕН 8000
+```
+
+
+**4. Запуск Docker:**
+В папке с проектом выполните:
+```bash
+docker-compose up --build
+```
+
+
+**5. Настройка в Telegram:**
+В настройках бота через @BotFather привяжите ваш домен Ngrok к кнопке Menu Button.
+
+## 🛠 Технологический стек
+### Backend: FastAPI, Python 3.12
+### Database: PostgreSQL + SQLAlchemy 2.0 (Async)
+### Telegram: Aiogram 3.x
+### Scraping: Selenium (Chrome Headless)
+### DevOps: Docker, Docker Compose, Alembic
