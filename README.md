@@ -24,8 +24,11 @@
 
 ## 📸 Интерфейс
 <p align="center">
-  <img src="assets/miniapp_screen.png" width="300" alt="Mini App">
-  <img src="assets/bot_alerts.png" width="300" alt="Alerts">
+  <img src="assets/miniapp_screen.png" width="300" alt="Mini App Interface">
+</p>
+
+<p align="center">
+  <img src="assets/bot_alerts.png" width="500" alt="Bot Notifications">
 </p>
 
 ---
