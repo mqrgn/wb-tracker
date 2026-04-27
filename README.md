@@ -73,9 +73,13 @@ docker-compose up --build
 **5. Настройка в Telegram:**
 В настройках бота через @BotFather привяжите ваш домен Ngrok к кнопке Menu Button.
 
+
 ## 🛠 Технологический стек
 ### Backend: FastAPI, Python 3.12
 ### Database: PostgreSQL + SQLAlchemy 2.0 (Async)
 ### Telegram: Aiogram 3.x
 ### Scraping: Selenium (Chrome Headless)
 ### DevOps: Docker, Docker Compose, Alembic
+
+
+Проект разработан для автоматизации покупок и анализа цен.
