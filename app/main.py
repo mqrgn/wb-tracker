@@ -57,11 +57,11 @@ async def get_user_settings(user_id: int, session: AsyncSession = Depends(get_db
 
 @app.post("/settings")
 async def save_settings(data: SSettingsAdd, session: AsyncSession = Depends(get_db)):
-    # 1. Ищем существующую запись
+    # Ищем существующую запись
     existing = await SettingsDAO.find_one_or_none(session, user_id=data.user_id)
 
     if existing:
-        # 2. Обновляем (если нашли)
+        # Обновляем (если нашли)
         await SettingsDAO.update(
             session,
             instance_id=existing.id,
@@ -70,7 +70,7 @@ async def save_settings(data: SSettingsAdd, session: AsyncSession = Depends(get_
             max_price=data.max_price
         )
     else:
-        # 3. Добавляем (если не нашли)
+        # Добавляем (если не нашли)
         await SettingsDAO.add(
             session,
             user_id=data.user_id,
@@ -79,7 +79,7 @@ async def save_settings(data: SSettingsAdd, session: AsyncSession = Depends(get_
             max_price=data.max_price
         )
 
-    # 4. САМОЕ ВАЖНОЕ: Коммитим изменения в базу!
+    # Коммитим изменения в базу
     await session.commit()
 
     return {"status": "ok"}

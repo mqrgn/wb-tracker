@@ -118,7 +118,7 @@
     const saveBtn = document.getElementById('save-btn');
     const statusDiv = document.getElementById('status');
 
-    // 1. Загрузка списка брендов
+    // Загрузка списка брендов
     async function loadBrands() {
         try {
             const response = await fetch('/brands'); // Убедись, что путь совпадает (/brands или /api/brands)
@@ -140,7 +140,7 @@
         }
     }
 
-    // 2. Загрузка текущих настроек пользователя
+    // Загрузка текущих настроек пользователя
     async function loadUserSettings() {
         try {
             const response = await fetch(`/settings/${userId}`);
@@ -155,7 +155,7 @@
         }
     }
 
-    // 3. Сохранение настроек
+    // Сохранение настроек
     saveBtn.onclick = async () => {
         const data = {
             user_id: userId,

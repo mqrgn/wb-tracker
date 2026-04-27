@@ -10,7 +10,6 @@ from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Твои новые модули
 from app.dao import UserDAO, BrandDAO, SettingsDAO
 from app.database import async_session_factory
 from app.utils import generate_wb_url
@@ -79,7 +78,6 @@ async def scheduled_task():
 
 
 # --- ХЭНДЛЕРЫ ---
-
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     user_id = message.from_user.id

@@ -36,7 +36,7 @@ def scroll_to_bottom(driver):
             else:
                 stuck_counter += 1
                 print(f"Внизу страницы. Попытка {stuck_counter} из 3...")
-                time.sleep(1.5)  # Даем WB время "подумать" и подгрузить
+                time.sleep(1.5)  # Даем WB время подумать и подгрузить
 
                 if stuck_counter >= 3:
                     print("Товары больше не подгружаются. Конец.")

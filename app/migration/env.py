@@ -5,7 +5,6 @@ import os
 
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
-# Теперь импорты сработают корректно
 from app.database import DATABASE_URL, Base
 from app.models import Brand, User, Settings
 
