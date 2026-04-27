@@ -1,0 +1,25 @@
+# Web Framework & Server
+fastapi
+uvicorn[standard]     # [standard] добавляет ускоренные циклы обработки (uvloop)
+jinja2
+python-multipart
+
+# Telegram Bot
+aiogram
+
+# Database & ORM
+sqlalchemy>=2.0
+asyncpg
+psycopg2-binary
+alembic
+
+# Scraping & Automation
+selenium
+webdriver-manager
+
+# Scheduling
+apscheduler
+
+# Configuration & Environment
+python-dotenv
+pydantic-settings

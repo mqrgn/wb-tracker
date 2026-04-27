@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки WB Парсера</title>
+    <!-- Подключаем Telegram SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Используем цвета темы Telegram */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ccc);
+            background-color: var(--tg-theme-secondary-bg-color, #efeff4);
+            color: var(--tg-theme-text-color, #000);
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #fff);
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:active {
+            opacity: 0.8;
+        }
+
+        #status {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Настройки мониторинга</h2>
+
+    <div class="form-group">
+        <label for="brand">Выберите бренд:</label>
+        <select id="brand">
+            <option value="">Загрузка брендов...</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Диапазон цен (₽):</label>
+        <div class="price-inputs">
+            <input type="number" id="min_price" placeholder="Мин" min="0">
+            <input type="number" id="max_price" placeholder="Макс" min="0">
+        </div>
+    </div>
+
+    <button id="save-btn">Сохранить настройки</button>
+    <div id="status"></div>
+</div>
+
+<script>
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // Расширяем на весь экран
+
+    const user = tg.initDataUnsafe?.user;
+    const userId = user?.id || 12345; // Для тестов в браузере, если ТГ не отдал ID
+
+    const brandSelect = document.getElementById('brand');
+    const minPriceInput = document.getElementById('min_price');
+    const maxPriceInput = document.getElementById('max_price');
+    const saveBtn = document.getElementById('save-btn');
+    const statusDiv = document.getElementById('status');
+
+    // 1. Загрузка списка брендов
+    async function loadBrands() {
+        try {
+            const response = await fetch('/brands'); // Убедись, что путь совпадает (/brands или /api/brands)
+            const brands = await response.json();
+            brandSelect.innerHTML = '';
+            brands.forEach(brand => {
+                const option = document.createElement('option');
+                option.value = brand.brand_id;
+                option.textContent = brand.name.toUpperCase();
+                brandSelect.appendChild(option);
+            });
+
+            // Пытаемся загрузить настройки, но если их нет - не падаем
+            loadUserSettings().catch(e => console.log("Настроек пока нет, это нормально"));
+
+        } catch (e) {
+            console.error('Ошибка загрузки брендов:', e);
+            brandSelect.innerHTML = '<option>Ошибка загрузки</option>';
+        }
+    }
+
+    // 2. Загрузка текущих настроек пользователя
+    async function loadUserSettings() {
+        try {
+            const response = await fetch(`/settings/${userId}`);
+            if (response.ok) {
+                const settings = await response.json();
+                brandSelect.value = settings.brand_id;
+                minPriceInput.value = settings.min_price;
+                maxPriceInput.value = settings.max_price;
+            }
+        } catch (e) {
+            console.log('Настройки еще не созданы');
+        }
+    }
+
+    // 3. Сохранение настроек
+    saveBtn.onclick = async () => {
+        const data = {
+            user_id: userId,
+            brand_id: parseInt(brandSelect.value),
+            min_price: parseInt(minPriceInput.value) || 0,
+            max_price: parseInt(maxPriceInput.value) || 1000000
+        };
+
+        try {
+            statusDiv.textContent = 'Сохранение...';
+            const response = await fetch('/settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                statusDiv.style.color = 'green';
+                statusDiv.textContent = 'Успешно сохранено!';
+                tg.HapticFeedback.notificationOccurred('success');
+                setTimeout(() => tg.close(), 1500); // Закрываем через 1.5 сек
+            } else {
+                const err = await response.json();
+                throw new Error(err.detail[0].msg || 'Ошибка валидации');
+            }
+        } catch (e) {
+            statusDiv.style.color = 'red';
+            statusDiv.textContent = 'Ошибка: ' + e.message;
+            tg.HapticFeedback.notificationOccurred('error');
+        }
+    };
+
+    // Запуск приложения
+    loadBrands();
+</script>
+
+</body>
+</html>
